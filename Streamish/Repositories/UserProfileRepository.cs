@@ -114,7 +114,7 @@ namespace Streamish.Repositories
                 {
                     cmd.CommandText = @"
                         UPDATE UserProfile
-                           SET Name = @Name,
+                           SET [Name] = @Name,
                                Email = @Email,
                                ImageUrl = @ImageUrl,
                                DateCreated = @DateCreated
@@ -122,8 +122,8 @@ namespace Streamish.Repositories
 
                     DbUtils.AddParameter(cmd, "@Name", userProfile.Name);
                     DbUtils.AddParameter(cmd, "@Email", userProfile.Email);
-                    DbUtils.AddParameter(cmd, "@DateCreated", userProfile.DateCreated);
                     DbUtils.AddParameter(cmd, "@ImageUrl", userProfile.ImageUrl);
+                    DbUtils.AddParameter(cmd, "@DateCreated", userProfile.DateCreated);
                     DbUtils.AddParameter(cmd, "@Id", userProfile.Id);
 
                     cmd.ExecuteNonQuery();
