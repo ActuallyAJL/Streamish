@@ -8,6 +8,8 @@ namespace Streamish.Repositories
         void Add(UserProfile userProfile);
         void Delete(int id);
         List<UserProfile> GetAll();
+        public List<UserProfile> GetAllWithVideos();
+        public UserProfile GetUserByIdWithVideos(int id);
         UserProfile GetById(int id);
         void Update(UserProfile userProfile);
     }

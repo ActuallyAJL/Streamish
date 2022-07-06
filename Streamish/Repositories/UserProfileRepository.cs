@@ -46,6 +46,120 @@ namespace Streamish.Repositories
             }
         }
 
+        public List<UserProfile> GetAllWithVideos()
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT up.Id AS UserId, up.Name, up.Email, up.DateCreated AS UserProfileDateCreated, up.ImageUrl AS UserProfileImageUrl, v.Id AS VideoId, v.Title, v.Description, v.Url, v.DateCreated AS VideoDateCreated, v.UserProfileId As VideoUserProfileId, c.Id AS CommentId, c.Message, c.UserProfileId AS CommentUserProfileId
+                        FROM UserProfile up
+                        LEFT JOIN Video v ON v.UserProfileId = up.Id
+                        LEFT JOIN Comment c on c.VideoId = v.id
+                        ORDER BY up.DateCreated
+                    ";
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        var users = new List<UserProfile>();
+                        while (reader.Read())
+                        {
+                            var userId = DbUtils.GetInt(reader, "UserId");
+
+                            var existingUser = users.FirstOrDefault(p => p.Id == userId);
+                            if (existingUser == null)
+                            {
+                                existingUser = new UserProfile()
+                                {
+                                    Id = userId,
+                                    Name = DbUtils.GetString(reader, "Name"),
+                                    Email = DbUtils.GetString(reader, "Email"),
+                                    DateCreated = DbUtils.GetDateTime(reader, "UserProfileDateCreated"),
+                                    ImageUrl = DbUtils.GetString(reader, "UserProfileImageUrl"),
+                                    Videos = new List<Video>()
+                                };
+
+                                users.Add(existingUser);
+                            }
+
+                            if (DbUtils.IsNotDbNull(reader, "VideoId"))
+                            {
+                                var existingVideo = existingUser.Videos.FirstOrDefault(p => p.Id == DbUtils.GetInt(reader, "VideoId"));
+                                if (existingVideo ==null)
+                                {
+                                    existingUser.Videos.Add(new Video()
+                                    {
+                                        Id = DbUtils.GetInt(reader, "VideoId"),
+                                        Title = DbUtils.GetString(reader, "Title"),
+                                        Description = DbUtils.GetString(reader, "Description"),
+                                        DateCreated = DbUtils.GetDateTime(reader, "VideoDateCreated"),
+                                        Url = DbUtils.GetString(reader, "Url"),
+                                        UserProfileId = DbUtils.GetInt(reader, "VideoUserProfileId")
+                                    });
+                                }
+                            }
+                        }
+
+                        return users;
+                    }
+                }
+            }
+        }
+        public UserProfile GetUserByIdWithVideos(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT up.Id AS UserId, up.Name, up.Email, up.DateCreated AS UserProfileDateCreated, up.ImageUrl AS UserProfileImageUrl, v.Id AS VideoId, v.Title, v.Description, v.Url, v.DateCreated AS VideoDateCreated, v.UserProfileId As VideoUserProfileId, c.Id AS CommentId, c.Message, c.UserProfileId AS CommentUserProfileId
+                        FROM UserProfile up
+                        LEFT JOIN Video v ON v.UserProfileId = up.Id
+                        LEFT JOIN Comment c on c.VideoId = v.id
+                        WHERE up.Id = @id
+                    ";
+
+                    DbUtils.AddParameter(cmd, "@id", id);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        UserProfile user = null;
+                        while (reader.Read())
+                        {
+                            var userId = DbUtils.GetInt(reader, "UserId");
+                            user = new UserProfile()
+                            {
+                                Id = userId,
+                                Name = DbUtils.GetString(reader, "Name"),
+                                Email = DbUtils.GetString(reader, "Email"),
+                                DateCreated = DbUtils.GetDateTime(reader, "UserProfileDateCreated"),
+                                ImageUrl = DbUtils.GetString(reader, "UserProfileImageUrl"),
+                                Videos = new List<Video>()
+                            };
+
+                            if (DbUtils.IsNotDbNull(reader, "VideoId"))
+                            {
+                                user.Videos.Add(new Video()
+                                {
+                                    Id = DbUtils.GetInt(reader, "VideoId"),
+                                    Title = DbUtils.GetString(reader, "Title"),
+                                    Description = DbUtils.GetString(reader, "Description"),
+                                    DateCreated = DbUtils.GetDateTime(reader, "VideoDateCreated"),
+                                    Url = DbUtils.GetString(reader, "Url"),
+                                    UserProfileId = DbUtils.GetInt(reader, "VideoUserProfileId")
+                                });
+                            }
+                        }
+
+                        return user;
+                    }
+                }
+            }
+        }
+
         public UserProfile GetById(int id)
         {
             using (var conn = Connection)
