@@ -62,7 +62,6 @@ namespace Streamish.Controllers
             return Ok(_videoRepository.GetHottest(date));
         }
 
-
         [HttpPost]
         public IActionResult Post(Video video)
         {

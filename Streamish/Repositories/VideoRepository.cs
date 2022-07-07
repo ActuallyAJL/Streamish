@@ -123,6 +123,7 @@ namespace Streamish.Repositories
                 }
             }
         }
+
         public Video GetVideoByIdWithComments(int id)
         {
             using (var conn = Connection)
@@ -231,6 +232,7 @@ namespace Streamish.Repositories
                 }
             }
         }
+
         public List<Video> Search(string criterion, bool sortDescending)
         {
             using (var conn = Connection)
@@ -289,6 +291,7 @@ namespace Streamish.Repositories
                 }
             }
         }
+
         public List<Video> GetHottest(DateTime date)
         {
             using (var conn = Connection)
