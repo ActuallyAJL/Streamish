@@ -50,3 +50,6 @@ C:\Users\zero3\workspace\nss\csharp\Streamish\Streamish\obj\Debug\net5.0\refint\
 C:\Users\zero3\workspace\nss\csharp\Streamish\Streamish\obj\Debug\net5.0\Streamish.pdb
 C:\Users\zero3\workspace\nss\csharp\Streamish\Streamish\obj\Debug\net5.0\Streamish.genruntimeconfig.cache
 C:\Users\zero3\workspace\nss\csharp\Streamish\Streamish\obj\Debug\net5.0\ref\Streamish.dll
+C:\Users\zero3\workspace\nss\csharp\Streamish\Streamish\bin\Debug\net5.0\client\package-lock.json
+C:\Users\zero3\workspace\nss\csharp\Streamish\Streamish\bin\Debug\net5.0\client\package.json
+C:\Users\zero3\workspace\nss\csharp\Streamish\Streamish\bin\Debug\net5.0\client\public\manifest.json
