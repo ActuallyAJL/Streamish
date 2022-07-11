@@ -1,9 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Streamish",
-    "\\Streamish.Tests"
+    "\\Streamish\\client",
+    "\\Streamish\\client\\src",
+    "\\Streamish\\client\\src\\components",
+    "\\Streamish\\client\\src\\modules"
   ],
-  "SelectedNode": "\\Streamish.Tests\\Streamish.Tests.csproj",
+  "SelectedNode": "\\Streamish.sln",
   "PreviewInSolutionExplorer": false
 }
